@@ -14,16 +14,40 @@
 api.fake.taffy = (function (){
     /* Module scope variables */
     
-    var getdata, init, thedb, printdata;
+    var getdata, init, thedb, printdata, products;
         
-    /* Function that will init the Taffy DB in memory.  This only has to be done at once */
     
-    init=(function(){
-        thedb = TAFFY();
-         
-       /* Need to handle error handling in here or maybe a singleton pattern */ 
+    
+    init =(function(){
+        /* Method scope variable */
         
+        var data;
+        
+        console.log('In init_embedded function');
+          
+        /* Pattern to retreive a data from a datastore and print it to the console */
+        
+        thedb = TAFFY();
+        
+        /* Callapi the API and return the object literal in a variable */
+        
+        data = api.fake.getpeoplelist();
+        
+        /* Insert the data into the TAFFY database */
+        
+         thedb.insert(data); 
+        
+        /* Print out the retreived data to the console as a check */
+        
+        thedb().each(function(thedb,idx){
+            console.log(thedb.name, thedb.age);
+        });
+        
+        
+              
+        console.log('--Exiting init embedded function');
     });
+    
     
     
     
@@ -63,7 +87,10 @@ api.fake.taffy = (function (){
         
     });
     
-   
+   printsomething = (function(){
+       console.log('Visibility Test');
+       
+   });
     
     
     
@@ -75,7 +102,8 @@ api.fake.taffy = (function (){
     
     return {getdata: getdata,
             init:init,
-            printdata : printdata};        
+            printdata : printdata,
+            printsomething : printsomething};        
     
    
     
